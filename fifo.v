@@ -72,7 +72,7 @@ module fifo
       end // else: !if(reset)
    end // always @ (posedge clk_in)
 
-   assign data_out = buffer[out_pointer];
+   assign data_out = empty_out ? 0 : buffer[out_pointer];
    assign out_pointer_count_enable = enable_out;
 
    always @(posedge clk_out) begin

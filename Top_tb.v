@@ -60,4 +60,14 @@ module Top_tb;
        .packetout(packetout),
        .packetoutValid(packetoutValid) );
 
+   wire [7:0] messageout;
+   wire       messageoutValid;
+
+   remessagizer remessagizer
+     ( .CLK(CLK), .RESET(RESET),
+       .packet(packetout),
+       .packetValid(packetoutValid),
+       .message(messageout),
+       .messageValid(messageoutValid) );
+
 endmodule // Top_tb

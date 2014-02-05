@@ -13,6 +13,9 @@ module packetSource
    
    reg [7:0]    messages [0:199];
 
+   // grep '..' packetSource.hex  | wc -l
+   localparam [7:0] buffersize = 77;
+
    initial $readmemh("packetSource.hex", messages, 0, 199);
 
    reg [7:0]    position = 0;
@@ -33,7 +36,6 @@ module packetSource
          sourceDataSize <= 0;
          sourceDataSizeValid <= 0;
       end else begin
-
         
          case (state)
 
@@ -63,7 +65,18 @@ module packetSource
               sourceData <= 8'b0;
               sourceDataValid <= 0;
               sourceDataSizeValid <= 1;
-              state <= 0;
+              if (position == buffersize)
+                state <= 3;
+              else
+                state <= 0;
+           end
+
+           // idle
+           3: begin
+              sourceData <= 8'b0;
+              sourceDataValid <= 0;
+              sourceDataSize <= 0;
+              sourceDataSizeValid <= 0;
            end
 
          endcase

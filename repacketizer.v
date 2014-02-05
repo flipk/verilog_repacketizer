@@ -3,7 +3,7 @@ module repacketizer
   #( parameter MAXPACKET = 16,
      parameter DEST_PORT_NUMBER = 8'hdd,
      parameter SRC_PORT_NUMBER = 8'hee,
-     parameter NAGLE_COUNTER = 16'hf0 )
+     parameter NAGLE_COUNTER = 16'h40 )
   ( CLK, RESET,
     dataFifoData, dataFifoDataEnable,
     sizeFifoData, sizeFifoDataEnable, sizeFifoDataEmpty,
@@ -181,6 +181,7 @@ module repacketizer
               packetout <= packetbuild[outpos];
               outpos <= outpos + 1;
               if (outpos == inpos) begin
+                 packetout <= 8'b0;
                  packetoutValid <= 0;
                  inpos <= 0;
                  seqno <= seqno + 1;
