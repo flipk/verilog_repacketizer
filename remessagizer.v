@@ -169,6 +169,9 @@ module remessagizer
                 totallen <= totallen_saved;
               seqno <= packetOut;
               packetlen <= packetlen - 1;
+              // compare against packetOut because seqno isn't
+              // loaded yet. starting to wonder if i even need
+              // seqno reg.
               if (packetOut == expected_seqno) begin
                  // good and normal.
                  state <= 11;
@@ -177,6 +180,8 @@ module remessagizer
                  if (pieceno == 0) begin
                     // okay to continue since it's first piece.
                     // but make sure inpos is reset.
+                    // actually wondering if i should just always
+                    // be resetting inpos=0 on pieceno==0. probably.
                     inpos <= 0;
                     state <= 11;
                  end else begin
@@ -187,7 +192,7 @@ module remessagizer
               end
            end
 
-           // discard piece
+           // discard piece -- this is completely untested.
            10: begin
               piecelen <= piecelen - 1;
               packetlen <= packetlen - 1;
